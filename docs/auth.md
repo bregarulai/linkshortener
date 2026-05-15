@@ -16,7 +16,6 @@ All authentication in this app is handled exclusively by **Clerk**. No other aut
 | User visits `/dashboard` while **logged in**           | Grant access normally.    |
 | User visits the **homepage** (`/`) while **logged in** | Redirect to `/dashboard`. |
 | After **sign-in or sign-up**                           | Redirect to `/dashboard`. |
-| After **sign-out**                                     | Redirect to `/`           |
 
 ## Implementation Notes
 
