@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { createLinkAction } from "@/app/dashboard/actions";
+import { useState, useCallback } from 'react';
+import type { SubmitEvent } from 'react';
+import { z } from 'zod';
+import { createLinkAction } from '@/app/dashboard/actions';
 
 export interface UseCreateLinkFormReturn {
   originalUrl: string;
@@ -13,28 +15,41 @@ export interface UseCreateLinkFormReturn {
   setOriginalUrl: (url: string) => void;
   setShortCode: (code: string) => void;
   resetForm: () => void;
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
+  handleSubmit: (e: SubmitEvent<HTMLFormElement>) => Promise<void>;
 }
 
 const SHORT_CODE_MAX_LENGTH = 18;
 
+const shortCodeSchema = z.object({
+  shortCode: z
+    .string()
+    .max(
+      SHORT_CODE_MAX_LENGTH,
+      `Short-link must be ${SHORT_CODE_MAX_LENGTH} characters or less`,
+    ),
+});
+
 function validateShortCode(code: string): string | null {
-  if (code.trim().length > SHORT_CODE_MAX_LENGTH) {
-    return "Short-link must be 18 characters or less";
+  const result = shortCodeSchema.safeParse({ shortCode: code });
+  if (!result.success) {
+    const errorMessage = result.error.issues?.[0]?.message;
+    return errorMessage || 'short-link should be less than 18 characters';
   }
   return null;
 }
 
-export function useCreateLinkForm(onCreated: () => void): UseCreateLinkFormReturn {
-  const [originalUrl, setOriginalUrl] = useState("");
-  const [shortCode, setShortCode] = useState("");
+export function useCreateLinkForm(
+  onCreated: () => void,
+): UseCreateLinkFormReturn {
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [shortCode, setShortCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
+    async (e: SubmitEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!originalUrl.trim()) return;
 
@@ -57,21 +72,23 @@ export function useCreateLinkForm(onCreated: () => void): UseCreateLinkFormRetur
 
         if (result.error) {
           setError(
-            typeof result.error === "string" ? result.error : "Failed to create link",
+            typeof result.error === 'string'
+              ? result.error
+              : 'Failed to create link',
           );
           return;
         }
 
-        if ("success" in result && result.success) {
+        if ('success' in result && result.success) {
           setShowSuccess(true);
-          setOriginalUrl("");
-          setShortCode("");
+          setOriginalUrl('');
+          setShortCode('');
           setTimeout(() => {
             onCreated();
           }, 1500);
         }
       } catch {
-        setError("An unexpected error occurred");
+        setError('An unexpected error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -80,19 +97,15 @@ export function useCreateLinkForm(onCreated: () => void): UseCreateLinkFormRetur
     [originalUrl, shortCode, onCreated],
   );
 
-  const setShortCodeWithValidation = useCallback(
-    (code: string) => {
-      setShortCode(code);
-      if (code.trim().length <= SHORT_CODE_MAX_LENGTH) {
-        setValidationError(null);
-      }
-    },
-    [],
-  );
+  const setShortCodeWithValidation = useCallback((code: string) => {
+    setShortCode(code);
+    const error = validateShortCode(code);
+    setValidationError(error);
+  }, []);
 
   const resetForm = useCallback(() => {
-    setOriginalUrl("");
-    setShortCode("");
+    setOriginalUrl('');
+    setShortCode('');
     setError(null);
     setShowSuccess(false);
     setValidationError(null);
