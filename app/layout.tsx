@@ -34,22 +34,22 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang='en'
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className='min-h-full flex flex-col'>
+      <body className="min-h-full flex flex-col">
         <ClerkProvider appearance={{ theme: shadcn }}>
-          <header className='flex justify-between items-center p-4 gap-4 h-16'>
-            <Link href='/' className='text-lg font-semibold text-foreground'>
+          <header className="flex justify-between items-center p-4 gap-4 h-16">
+            <Link href="/" className="text-lg font-semibold text-foreground">
               Link Shortener
             </Link>
-            <div className='flex items-center gap-4'>
-              <Show when='signed-out'>
-                <Button asChild variant='outline'>
-                  <SignInButton mode='modal' />
+            <div className="flex items-center gap-4">
+              <Show when="signed-out">
+                <Button asChild variant="outline">
+                  <SignInButton mode="modal" />
                 </Button>
                 <Button asChild>
-                  <SignUpButton mode='modal' />
+                  <SignUpButton mode="modal" />
                 </Button>
               </Show>
               <UserButton />

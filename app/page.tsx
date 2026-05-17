@@ -4,13 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Link2,
-  Pencil,
-  Shield,
-  ChevronRight,
-  ArrowRight,
-} from "lucide-react";
+import { Link2, Pencil, Shield, ChevronRight, ArrowRight } from "lucide-react";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -34,8 +28,8 @@ export default async function Home() {
             Amplify Your Reach
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Create, manage, and track your short links in one place. Get
-            branded URLs that look professional and drive more engagement.
+            Create, manage, and track your short links in one place. Get branded
+            URLs that look professional and drive more engagement.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Button asChild size="lg" className="gap-2">
@@ -86,8 +80,8 @@ export default async function Home() {
                     Custom Aliases
                   </h3>
                   <p className="text-muted-foreground">
-                    Create branded, custom link names that reflect your
-                    business or campaign for a professional touch.
+                    Create branded, custom link names that reflect your business
+                    or campaign for a professional touch.
                   </p>
                 </CardContent>
               </Card>
