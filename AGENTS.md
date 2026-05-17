@@ -40,16 +40,18 @@ Failing to read the relevant docs will result in code that violates project conv
 3. **Read the full content of that file** before writing a single line of code
 4. Follow the patterns, conventions, and best practices defined in that file
 
-| Topic          | Docs File                                          |
-| -------------- | -------------------------------------------------- |
-| Authentication | [`docs/auth.md`](./docs/auth.md)                   |
-| UI Components  | [`docs/ui-components.md`](./docs/ui-components.md) |
-| Data Fetching  | [`docs/data-fetching.md`](./docs/data-fetching.md) |
+| Topic              | Docs File                                           |
+| ------------------ | --------------------------------------------------- |
+| Authentication     | [`docs/auth.md`](./docs/auth.md)                    |
+| UI Components      | [`docs/ui-components.md`](./docs/ui-components.md)  |
+| Data Fetching      | [`docs/data-fetching.md`](./docs/data-fetching.md)  |
+| Data Mutations     | [`docs/data-mutations.md`](./docs/data-mutations.md) |
 
 **Mandatory checks by topic:**
 
 - **Any UI work** (pages, components, layouts, styling) → MUST read [`docs/ui-components.md`](./docs/ui-components.md). All UI must use shadcn/ui components — never create custom components.
 - **Any data access** (database queries, API routes, server actions) → MUST read [`docs/data-fetching.md`](./docs/data-fetching.md). All data must go through `/data` helper functions using Drizzle ORM.
+- **Any data mutation** (create, update, delete operations) → MUST read [`docs/data-mutations.md`](./docs/data-mutations.md). All mutations must use Server Actions with Zod validation, auth checks, and `/data` helpers.
 - **Any auth-related work** → MUST read [`docs/auth.md`](./docs/auth.md). Use Clerk v7 `auth()` from `@clerk/nextjs/server`.
 
 **If no relevant docs file exists for your task, check with the user before proceeding.**
