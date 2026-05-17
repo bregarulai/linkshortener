@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,15 +28,25 @@ interface EditLinkDialogProps {
 }
 
 export function EditLinkDialog({ link, open, onClose, onSave }: EditLinkDialogProps) {
-  const [editUrl, setEditUrl] = useState(link?.originalUrl || "");
-  const [editShortCode, setEditShortCode] = useState(link?.shortCode || "");
+  const [editUrl, setEditUrl] = useState("");
+  const [editShortCode, setEditShortCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Reset form when link prop changes
-  if (link) {
-    setEditUrl(link.originalUrl);
-    setEditShortCode(link.shortCode);
-  }
+  // Sync form values when link prop changes
+  useEffect(() => {
+    if (link) {
+      setEditUrl(link.originalUrl);
+      setEditShortCode(link.shortCode);
+    }
+  }, [link]);
+
+  // Reset form when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setEditUrl("");
+      setEditShortCode("");
+    }
+  }, [open]);
 
   const handleSave = async () => {
     if (!link) return;

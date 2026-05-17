@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Link2 } from "lucide-react";
 import { CreateLinkDialog } from "@/components/create-link-dialog";
+import { EditLinkDialog } from "@/components/edit-link-dialog";
 import { DeleteConfirmDialog } from "@/components/delete-confirm-dialog";
 import { LinkRow } from "@/components/link-row";
-import { deleteLinkAction } from "./actions";
+import { deleteLinkAction, updateLinkAction } from "./actions";
 
 interface DashboardClientProps {
   initialLinks: {
@@ -21,8 +22,18 @@ interface DashboardClientProps {
 
 export function DashboardClient({ initialLinks }: DashboardClientProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [links, setLinks] = useState(initialLinks);
-  const [deletingLink, setDeletingLink] = useState<{ id: number; shortCode: string; originalUrl: string } | null>(null);
+  const [deletingLink, setDeletingLink] = useState<{
+    id: number;
+    shortCode: string;
+    originalUrl: string;
+  } | null>(null);
+  const [editingLink, setEditingLink] = useState<{
+    id: number;
+    originalUrl: string;
+    shortCode: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreated = () => {
@@ -39,6 +50,44 @@ export function DashboardClient({ initialLinks }: DashboardClientProps) {
       setDeletingLink(null);
     } catch (error) {
       console.error("Failed to delete link:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEdit = (link: {
+    id: number;
+    originalUrl: string;
+    shortCode: string;
+  }) => {
+    setEditingLink(link);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = async (url: string, shortCode: string) => {
+    if (!editingLink) return;
+    setIsLoading(true);
+    try {
+      await updateLinkAction({
+        linkId: editingLink.id,
+        originalUrl: url,
+        shortCode: shortCode || undefined,
+      });
+      setLinks((prev) =>
+        prev.map((link) =>
+          link.id === editingLink.id
+            ? {
+                ...link,
+                originalUrl: url,
+                shortCode: shortCode || link.shortCode,
+              }
+            : link,
+        ),
+      );
+      setIsEditDialogOpen(false);
+      setEditingLink(null);
+    } catch (error) {
+      console.error("Failed to update link:", error);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +117,7 @@ export function DashboardClient({ initialLinks }: DashboardClientProps) {
               <LinkRow
                 key={link.id}
                 link={link}
-                onEdit={() => {}}
+                onEdit={handleEdit}
                 onDelete={(link) => setDeletingLink(link)}
               />
             ))}
@@ -80,6 +129,16 @@ export function DashboardClient({ initialLinks }: DashboardClientProps) {
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onCreated={handleCreated}
+      />
+
+      <EditLinkDialog
+        link={editingLink}
+        open={isEditDialogOpen}
+        onClose={() => {
+          setIsEditDialogOpen(false);
+          setEditingLink(null);
+        }}
+        onSave={handleSaveEdit}
       />
 
       <DeleteConfirmDialog
