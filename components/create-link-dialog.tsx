@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { z } from "zod";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +16,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Plus, X } from "lucide-react";
 import { createLinkAction } from "@/app/dashboard/actions";
+
+// Zod schema for short-code validation
+const createLinkDialogSchema = z.object({
+  shortCode: z
+    .string()
+    .refine(
+      (val) => val.length === 0 || val.length <= 18,
+      "Short-link must be 18 characters or less",
+    ),
+});
 
 interface CreateLinkDialogProps {
   open: boolean;
@@ -32,11 +43,22 @@ export function CreateLinkDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       if (!originalUrl.trim()) return;
+
+      // Client-side validation for short-code length
+      const validationResult = createLinkDialogSchema.safeParse({
+        shortCode: shortCode.trim(),
+      });
+      if (!validationResult.success && shortCode.trim().length > 18) {
+        setValidationError("Short-link must be 18 characters or less");
+        return;
+      }
+      setValidationError(null);
 
       setIsLoading(true);
       setError(null);
@@ -88,6 +110,15 @@ export function CreateLinkDialog({
     [onOpenChange],
   );
 
+  const handleShortCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setShortCode(value);
+    // Clear validation error when user starts typing again
+    if (validationError && value.trim().length <= 18) {
+      setValidationError(null);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className='sm:max-w-md'>
@@ -134,11 +165,14 @@ export function CreateLinkDialog({
                 type='text'
                 placeholder='short-link'
                 value={shortCode}
-                onChange={(e) => setShortCode(e.target.value)}
-                className='rounded-l-none'
+                onChange={handleShortCodeChange}
+                className={`rounded-l-none ${validationError ? "border-red-500 focus-visible:ring-red-500" : ""} ${shortCode.trim().length > 18 ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                 spellCheck={false}
               />
             </div>
+            {validationError && (
+              <p className='text-sm text-red-600'>{validationError}</p>
+            )}
           </div>
 
           {error && <p className='text-sm text-red-600'>{error}</p>}
