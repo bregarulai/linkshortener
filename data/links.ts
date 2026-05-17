@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { linksTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { randomBytes } from "crypto";
+import { nanoid } from "nanoid";
 
 export async function getLinksByUserId(userId: string) {
   return await db
@@ -28,8 +28,6 @@ export async function createLink(input: {
   return { id: link.id };
 }
 
-function generateShortCode(length: number = 8): string {
-  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-  const bytes = randomBytes(length);
-  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+function generateShortCode(_length: number = 8): string {
+  return nanoid(_length);
 }
