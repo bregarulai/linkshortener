@@ -1,3 +1,5 @@
+"use server"
+
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { createLink } from "@/data/links";
