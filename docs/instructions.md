@@ -2,17 +2,35 @@
 
 This file explains how to use the `/docs` instruction files in this project.
 
-## When to Use Docs Files
+## CRITICAL: Before ANY Code Changes
 
-**Before writing ANY code, read the relevant `/docs/*.md` file.** This applies in both PLAN and BUILD mode. There are no exceptions.
+**You MUST read the relevant docs file BEFORE making any code changes.** This is non-negotiable.
+
+### For UI work (components, pages, styling):
+
+1. **READ `docs/ui-components.md` FIRST** — before writing, editing, or deleting ANY UI code
+2. Follow instructions in that file strictly
+3. **NEVER skip reading this file** — failure to read it before UI work is a critical error
+
+### For data access:
+
+- Read `docs/data-fetching.md` before writing queries or API routes
+
+### For data mutations:
+
+- Read `docs/data-mutations.md` before writing create/update/delete logic
+
+### For authentication:
+
+- Read `docs/auth.md` before writing auth-related code
 
 ## Available Docs Files
 
-| Topic          | File                                          |
-| -------------- | --------------------------------------------- |
-| Authentication | [`auth.md`](docs/auth.md)                     |
-| UI Components  | [`ui-components.md`](docs/ui-components.md)   |
-| Data Fetching  | [`data-fetching.md`](docs/data-fetching.md)   |
+| Topic | File |
+| --- | --- |
+| Authentication | [`auth.md`](docs/auth.md) |
+| UI Components | [`ui-components.md`](docs/ui-components.md) |
+| Data Fetching | [`data-fetching.md`](docs/data-fetching.md) |
 | Data Mutations | [`data-mutations.md`](docs/data-mutations.md) |
 
 ## Quick Reference
