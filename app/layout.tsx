@@ -39,7 +39,7 @@ export default function RootLayout({
     >
       <body className='min-h-full flex flex-col items-center'>
         <ClerkProvider appearance={{ theme: shadcn }}>
-          <header className='flex justify-between items-center p-4 gap-4 h-16'>
+          <header className='flex justify-between items-center py-4 gap-4 h-16 w-6xl'>
             <Link href='/' className='text-lg font-semibold text-foreground'>
               Link Shortener
             </Link>
