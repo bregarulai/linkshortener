@@ -46,7 +46,7 @@ export function LinkFormFields({
       <div className="space-y-2">
         <Label htmlFor="shortCode">
           Custom short link{" "}
-          <span className="text-muted-foreground font-normal">(optional)</span>
+          <span className='text-muted-foreground font-normal'>(optional)</span>
         </Label>
         <div className="flex gap-2">
           <span className="flex items-center px-3 py-2 text-sm text-muted-foreground border border-r-0 border-input rounded-l-md bg-muted">

@@ -146,7 +146,7 @@ export function DashboardClient({ initialLinks }: DashboardClientProps) {
                       <Button
                         variant='ghost'
                         size='icon-xs'
-                        className='text-red-600 hover:text-red-700'
+                        className='text-destructive hover:text-destructive'
                         onClick={() => setDeletingLink(link)}
                       >
                         <Trash2 className='size-4' />

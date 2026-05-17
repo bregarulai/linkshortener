@@ -58,9 +58,9 @@ export function CreateLinkDialog({ open, onOpenChange, onCreated }: CreateLinkDi
           onClose={handleClose}
         />
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm" style={{ color: 'var(--destructive)' }}>{error}</p>}
         {showSuccess && (
-          <p className="text-sm text-green-600">Link created successfully!</p>
+          <p className="text-sm" style={{ color: 'var(--chart-2)' }}>Link created successfully!</p>
         )}
       </DialogContent>
     </Dialog>
