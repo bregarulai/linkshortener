@@ -42,12 +42,15 @@ Failing to read the relevant docs will result in code that violates project conv
 
 | Topic              | Docs File                                           |
 | ------------------ | --------------------------------------------------- |
+| Using Docs Files   | [`docs/instructions.md`](./docs/instructions.md)    |
 | Authentication     | [`docs/auth.md`](./docs/auth.md)                    |
 | UI Components      | [`docs/ui-components.md`](./docs/ui-components.md)  |
 | Data Fetching      | [`docs/data-fetching.md`](./docs/data-fetching.md)  |
 | Data Mutations     | [`docs/data-mutations.md`](./docs/data-mutations.md) |
 
 **Mandatory checks by topic:**
+
+- **Any task** → MUST read [`docs/instructions.md`](./docs/instructions.md) first for guidance on which docs file to use.
 
 - **Any UI work** (pages, components, layouts, styling) → MUST read [`docs/ui-components.md`](./docs/ui-components.md). All UI must use shadcn/ui components — never create custom components.
 - **Any data access** (database queries, API routes, server actions) → MUST read [`docs/data-fetching.md`](./docs/data-fetching.md). All data must go through `/data` helper functions using Drizzle ORM.
