@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const links = userId ? await getLinksByUserId(userId) : [];
 
   return (
-    <div className='flex flex-col align-items justify-center w-6xl space-y-6'>
+    <div className='flex flex-col align-items justify-center w-6xl space-y-8'>
       <div className='flex items-center justify-between'>
         <h1 className='text-2xl font-semibold'>Dashboard</h1>
         <Button asChild>

@@ -14,6 +14,7 @@ All data mutations in this application must be performed via **Next.js Server Ac
 | Validate all input with Zod | Defense-in-depth: reject invalid data before any DB operation. |
 | Check for authenticated user first | Never proceed to DB writes without verifying `auth()`. |
 | Use `/data` helper functions for DB operations | Server Actions must never import Drizzle directly. |
+| Never throw errors | Always return `{ error?: string, success?: boolean, data?: T }` — never `throw`. |
 
 ## File Layout
 
