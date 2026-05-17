@@ -126,7 +126,6 @@ export function CreateLinkDialog({
           <div className='flex items-center justify-between'>
             <DialogTitle>Create New Short Link</DialogTitle>
             <DialogClose className='absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:cursor-not-allowed data-[state=open]:bg-gray-100 dark:ring-offset-gray-950 dark:focus:ring-gray-300 dark:data-[state=open]:bg-gray-800'>
-              <X className='h-4 w-4' />
               <span className='sr-only'>Close</span>
             </DialogClose>
           </div>
