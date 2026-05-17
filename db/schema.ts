@@ -10,7 +10,7 @@ export const linksTable = pgTable("links", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   userId: text("userId").notNull(),
   originalUrl: varchar("originalUrl", { length: 2048 }).notNull(),
-  shortCode: varchar("shortCode", { length: 12 }).notNull(),
+  shortCode: varchar("shortCode", { length: 64 }).notNull(),
   createdAt: timestamp("createdAt", { withTimezone: true })
     .defaultNow()
     .notNull(),

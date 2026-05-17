@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { linksTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 export async function getLinksByUserId(userId: string) {
@@ -8,7 +8,7 @@ export async function getLinksByUserId(userId: string) {
     .select()
     .from(linksTable)
     .where(eq(linksTable.userId, userId))
-    .orderBy(linksTable.createdAt);
+    .orderBy(desc(linksTable.createdAt))
 }
 
 export async function createLink(input: {
