@@ -3,10 +3,9 @@
 This document defines how LLM‑based agents should interact with the _linkshortener_ codebase.  
 It contains:
 
-- **General coding conventions** – style, testing, linting, and documentation rules.
-- **Core agent categories** – reusable agents that perform common tasks across the project.
-- **Custom agent references** – separate markdown files in `docs/` that describe specialized agents for architectural or domain‑specific work.
-  All agents must obey these guidelines when generating code, writing tests, or modifying configuration.
+- **General coding conventions** – style, linting, and documentation rules.
+- **Instruction files** — platform-agnostic markdown files in `/docs/` that describe conventions and patterns for the codebase.
+  All agents must obey these guidelines when writing code or modifying configuration.
 
 ---
 
@@ -22,7 +21,7 @@ It contains:
 | **Documentation** | Public APIs, React props, and exported utilities must be documented with JSDoc or TypeScript comments.                  |
 | **Security**      | Never commit secrets. Use environment variables via `.env`.                                                             |
 | **Versioning**    | Follow semantic versioning in `package.json`.                                                                           |
-| **Clerk v7**      | Use `auth()` from `@clerk/nextjs/server` (check `userId`). Never use `currentUser()` — it was removed in v7.           |
+| **Clerk v7**      | Use `auth()` from `@clerk/nextjs/server` (check `userId`). Never use `currentUser()` — it was removed in v7.            |
 
 ---
 
@@ -32,6 +31,8 @@ It contains:
 
 Failing to read the relevant docs will result in code that violates project conventions, uses outdated patterns, or conflicts with existing architecture.
 
+**This rule applies to every single task** — even simple UI updates, new pages, or data queries. There are no exceptions.
+
 **How to follow this rule:**
 
 1. Identify the topic relevant to your task (authentication, UI components, database, API, etc.)
@@ -39,24 +40,25 @@ Failing to read the relevant docs will result in code that violates project conv
 3. **Read the full content of that file** before writing a single line of code
 4. Follow the patterns, conventions, and best practices defined in that file
 
-| Topic          | Docs File                              |
-| -------------- | -------------------------------------- |
-| Authentication | [`docs/auth.md`](./docs/auth.md)       |
+| Topic          | Docs File                                          |
+| -------------- | -------------------------------------------------- |
+| Authentication | [`docs/auth.md`](./docs/auth.md)                   |
 | UI Components  | [`docs/ui-components.md`](./docs/ui-components.md) |
+| Data Fetching  | [`docs/data-fetching.md`](./docs/data-fetching.md) |
+
+**Mandatory checks by topic:**
+
+- **Any UI work** (pages, components, layouts, styling) → MUST read [`docs/ui-components.md`](./docs/ui-components.md). All UI must use shadcn/ui components — never create custom components.
+- **Any data access** (database queries, API routes, server actions) → MUST read [`docs/data-fetching.md`](./docs/data-fetching.md). All data must go through `/data` helper functions using Drizzle ORM.
+- **Any auth-related work** → MUST read [`docs/auth.md`](./docs/auth.md). Use Clerk v7 `auth()` from `@clerk/nextjs/server`.
 
 **If no relevant docs file exists for your task, check with the user before proceeding.**
 
-| Topic          | Docs File                              |
-| -------------- | -------------------------------------- |
-| Authentication | [`docs/auth.md`](./docs/auth.md)       |
-| UI Components  | [`docs/ui-components.md`](./docs/ui-components.md) |
-
 ## Workflow Summary
 
-1. **Agent Invocation** – A user or higher‑level agent calls a core or custom agent with a clear prompt.
-2. **Execution** – The agent performs its task, writes/edits files, and runs linters/tests automatically if needed.
-3. **Verification** – Generated code is run through `npm test` and `npm lint`. Any failures must be addressed before commit.
-4. **Proxy Convention** – Clerk middleware must use `proxy.ts` (not `middleware.ts`). Use `clerkMiddleware()` to protect all routes globally, then `await auth.protect()` in individual page components for explicit protection.
+1. **Instruction Loading** – opencode identifies relevant instruction files from `/docs/` based on the task topic and loads them.
+2. **Execution** – The agent follows those instructions to write/edit files.
+3. **Verification** – Generated code is run through lint commands. Any failures must be addressed before commit.
 
 ---
 
